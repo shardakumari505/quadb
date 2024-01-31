@@ -1,8 +1,6 @@
-// screens/ShowDetailsScreen.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import ShowDetails from '../components/showDetails';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -45,7 +43,11 @@ const ShowDetailsScreen = () => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(`https://api.tvmaze.com/shows/${showId}`);
-                setShow(response.data);
+                const cleanedShow = {
+                    ...response.data,
+                    summary: cleanHTMLTags(response.data.summary),
+                };
+                setShow(cleanedShow);
             } catch (error) {
                 console.error('Error fetching show details:', error);
             }
@@ -53,6 +55,10 @@ const ShowDetailsScreen = () => {
 
         fetchData();
     }, [showId]);
+    const cleanHTMLTags = (html) => {
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        return doc.body.textContent || "";
+    };
 
     const [formData, setFormData] = useState(() => ({
         name: "",
@@ -97,80 +103,128 @@ const ShowDetailsScreen = () => {
         handleClose();
     };
 
+
+
     return (
         <div className='detail-page-container'>
             {show ? (
-                <>
-                    <ShowDetails show={show} onBookTicket={handleBookTicket} />
-                    {/* <BookTicketForm show={show} onSubmit={handleBookTicket} /> */}
-                    <Button variant="outlined" onClick={handleClickOpen}>
-                        Book Ticket
-                    </Button>
-                    <Dialog
-                        open={open}
-                        onClose={handleClose}                        
-                    >
-                        <DialogTitle>{show.name}</DialogTitle>
-                        <DialogContent>
-                            <DialogContentText>
-                                <div style={{ display: "flex", flexDirection: "column" }}>
-                                    <span>{show.summary}</span>
-                                    <span>Language : {show.language}</span>
-                                    <span>Genres : {show.genres}</span>
-                                    <span>Scheduled Day: {show.schedule.days}</span>
-                                    <span>Scheduled Time : {show.schedule.time}</span>
-                                    <span>Seats </span>
-                                    <Container sx={{ display: "flex" }}>
-                                        {[1, 2, 3, 4, 5, 6, 7, 8].map((number) => (
-                                            <div key={number}>
-                                                <Radio
-                                                    {...controlProps(number)}
-                                                    sx={{
-                                                        color: pink[800],
-                                                        '&.Mui-checked': {
-                                                            color: pink[600],
-                                                        },
-                                                    }}
-                                                />
-                                                <span>{number}</span>
-                                            </div>
-                                        ))}
-                                    </Container>
+                <div className="movie-movie-container">
+                    <div className="image-container" style={{ backgroundImage: `url(${show.image.original})` }} ><div className="image-overlay"></div>
+                        <div className="movie-all-texts">
+                            <div className="movie-title-and-imdb-rating1">
+                                <span className="movie-title-on-main-movie-page1">{show.name}</span>
+                                <span className="imdbRatingPlugin1" data-user="ur161205415" data-title="tt0468569" data-style="p1">
+                                    <img src="https://ia.media-imdb.com/images/G/01/imdb/plugins/rating/images/imdb_46x22.png" alt="The Dark Knight (2008) on IMDb" />
+                                    <h6>{show.rating.average}</h6>
+                                    <span className="fa fa-star star-movie-icon"></span>
+                                </span>
+                            </div>
+                            <span className="movie-details-on-main-movie-page">
+                                <span className="meta-data">{show.premiered} ‧ {show.network.country.code} ‧ {show.genres} ‧ {show.language} ‧ {show.runtime}</span>
+                            </span>
+                            <span className="movie-description-on-main-movie-page">{show.summary}</span>
+                            <span className="more-about-movie-on-main-movie-page">
+                                <span className="more-meta-data-movie-page">
+                                    <span className="left-column-movie-page">Type</span>
+                                    <span className="right-column-movie-page">{show.type}</span>
+                                </span>
+                                <span className="more-meta-data-movie-page">
+                                    <span className="left-column-movie-page">Status</span>
+                                    <span className="right-column-movie-page">{show.status}</span>
+                                </span>
+                                <span className="more-meta-data-movie-page">
+                                    <span className="left-column-movie-page">Premiered</span>
+                                    <span className="right-column-movie-page">{show.premiered}</span>
+                                </span>
+                                <span className="more-meta-data-movie-page">
+                                    <span className="left-column-movie-page">Ended</span>
+                                    <span className="right-column-movie-page">{show.ended}</span>
+                                </span>
+                                <span className="more-meta-data-movie-page">
+                                    <span className="left-column-movie-page">TimeZone</span>
+                                    <span className="right-column-movie-page">{show.network.country.timezone}</span>
+                                </span>
+                            </span>
+                            <div className="movie-play-button-container">
+                                <div className="movie-play-left-container">
+                                    
+                                    <div className="movie-share-button">
+                                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                            <Button className='book-ticket-button' variant="outlined" onClick={handleClickOpen}>
+                                                Book Ticket
+                                            </Button>
+                                            <Dialog
+                                                open={open}
+                                                onClose={handleClose}
+                                            >
+                                                <DialogTitle>{show.name}</DialogTitle>
+                                                <DialogContent>
+                                                    <DialogContentText>
+                                                        <div style={{ display: "flex", flexDirection: "column" }}>
+                                                            <span style={{ textAlign: "justify" }}>{show.summary}</span>
+                                                            <span><b>Language :</b> {show.language}</span>
+                                                            <span><b>Genres :</b> {show.genres}</span>
+                                                            <span><b>Scheduled Day:</b> {show.schedule.days}</span>
+                                                            <span><b>Scheduled Time :</b> {show.schedule.time}</span>
+                                                            <span><b>Seats </b></span>
+                                                            <Container sx={{ display: "flex" }}>
+                                                                {[1, 2, 3, 4, 5, 6, 7, 8].map((number) => (
+                                                                    <div key={number}>
+                                                                        <Radio
+                                                                            {...controlProps(number)}
+                                                                            sx={{
+                                                                                color: pink[800],
+                                                                                '&.Mui-checked': {
+                                                                                    color: pink[600],
+                                                                                },
+                                                                            }}
+                                                                        />
+                                                                        <span>{number}</span>
+                                                                    </div>
+                                                                ))}
+                                                            </Container>
+                                                        </div>
+                                                    </DialogContentText>
+                                                    <TextField
+                                                        autoFocus
+                                                        required
+                                                        margin="dense"
+                                                        id="name"
+                                                        name="name"
+                                                        label="Name"
+                                                        type="name"
+                                                        fullWidth
+                                                        variant="standard"
+                                                        value={formData.name}
+                                                        onChange={handleButtonChange}
+                                                    />
+                                                    <TextField
+                                                        autoFocus
+                                                        required
+                                                        margin="dense"
+                                                        id="email"
+                                                        name="email"
+                                                        label="Email Address"
+                                                        type="email"
+                                                        fullWidth
+                                                        variant="standard"
+                                                        value={formData.email}
+                                                        onChange={handleButtonChange}
+                                                    />
+                                                </DialogContent>
+                                                <DialogActions>
+                                                    <Button onClick={handleClose}>Cancel</Button>
+                                                    <Button onClick={() => handleBookTicket(formData, selectedValue)}>Book</Button>
+                                                </DialogActions>
+                                            </Dialog>
+                                        </div>
+                                    </div>
                                 </div>
-                            </DialogContentText>
-                            <TextField
-                                autoFocus
-                                required
-                                margin="dense"
-                                id="name"
-                                name="name"
-                                label="Name"
-                                type="name"
-                                fullWidth
-                                variant="standard"
-                                value={formData.name}
-                                onChange={handleButtonChange}
-                            />
-                            <TextField
-                                autoFocus
-                                required
-                                margin="dense"
-                                id="email"
-                                name="email"
-                                label="Email Address"
-                                type="email"
-                                fullWidth
-                                variant="standard"
-                                value={formData.email}
-                                onChange={handleButtonChange}
-                            />
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={handleClose}>Cancel</Button>
-                            <Button onClick={() => handleBookTicket(formData, selectedValue)}>Book</Button>
-                        </DialogActions>
-                    </Dialog>
-                </>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             ) : (
                 <p>Loading...</p>
             )}

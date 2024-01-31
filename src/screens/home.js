@@ -3,7 +3,6 @@ import axios from 'axios';
 import ShowList from '../components/showList';
 import './home.scss';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/navbar';
 
 const HomeScreen = () => {
     const navigate = useNavigate();
@@ -25,7 +24,7 @@ const HomeScreen = () => {
 
     return (
         <div className='home-page-container'>
-            <h1 className='home-page-h1'>TV Shows</h1>
+            <h1 className='home-page-h1'>SHOWS</h1>
             <ShowList shows={shows} onShowClick={handleShowClick} />
         </div>
     );

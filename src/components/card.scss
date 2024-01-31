@@ -1,0 +1,113 @@
+.main-card-containerrr {
+    height: 60vh;
+    width: 400px;
+    border: 2px solid whitesmoke;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: 10;
+    margin: 10px;
+}
+
+.main-card-container-before-hoverrr {
+    height: 60vh;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+}
+
+.main-card-container-toppp {
+    height: 55vh;
+    width: 400px;
+    margin: 0;
+    padding: 0;
+}
+
+.main-card-container-top-texttt {
+    height: 2vh;
+    display: flex;
+    align-items: center;
+    font-size: 2rem;
+    color: aliceblue;
+    padding: 10px;
+}
+
+.imdbicon {
+    width: 70px;
+}
+
+.checked {
+    color: orange;
+    font-size: 2rem;
+}
+
+.main-card-container-bottommm {
+    height: 8vh;
+    width: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    background-color: #141414;
+    opacity: 0.85;
+}
+
+.main-card-container-bottom-on-hoverrr {
+    transform-origin: 0 100%;
+    width: 400px;
+    height: 30vh;
+    margin-top: -30vh;
+    background: #141414;
+    opacity: 0.7;
+    transition: transform .5s;
+    transform: scaleY(0);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-card-container-bottom-on-hoverrr p {
+    padding: 0 20px;
+    color: white;
+    font-weight: bold;
+    text-align: justify;
+}
+
+.main-card-containerrr:hover {
+    .main-card-container-bottommm {
+        display: none;
+    }
+
+    .main-card-container-bottom-on-hoverrr {
+        transform: scaleY(1);
+    }
+}
+
+.main-card-bottom-buttonnn {
+    height: 40px;
+    width: 120px;
+    border-radius: 5px;
+    background-color: #E50914;
+    opacity: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+    color: aliceblue;
+    margin-bottom: 15px;
+    transition: color 0.2s linear;
+}
+
+.main-card-bottom-buttonnn:hover {
+    color: aliceblue;
+    background-color: #ff000d;
+}
+
+.read-or-hide {
+    color: blue;
+    cursor: pointer;
+}

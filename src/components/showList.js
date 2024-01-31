@@ -1,18 +1,27 @@
 import React from 'react';
 import './showList.scss';
+import Card from './card';
 
 const ShowList = ({ shows, onShowClick }) => {
     return (
         <div className='showList-container'>
-            <ul>
-                {shows.map((show) => (
-                    <li key={show.id}>
-                        <h3>{show.name}</h3>
-                        <p>{show.summary}</p>
-                        <button onClick={() => onShowClick(show.id)}>Details</button>
-                    </li>
-                ))}
-            </ul>
+            {shows.map((show) => {
+                const data = show.summary;
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data, 'text/html');
+                const textContent = doc.body.textContent;
+
+                return (
+                    <Card
+                        key={show.id}
+                        MovieName={show.name}
+                        Desc={textContent}
+                        imgUrl={show.image ? show.image.original : null}
+                        IMDB={show.rating.average}
+                        onCardClick={() => onShowClick(show.id, textContent)}
+                    />
+                );
+            })}
         </div>
     );
 };
